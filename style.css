@@ -1,307 +1,346 @@
 /* ==========================================================================
-   MARIO VS SONIC - ESTILOS RETRÔ (style.css)
+   MARIO VS SONIC - STYLE.CSS (RETRO STAGE BACKGROUND & MINI-GAME)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* Reset e Configurações Globais */
+/* Reset Global e Desativa Seleção de Texto para Efeito Arcade */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     image-rendering: pixelated;
+    user-select: none;
 }
 
 :root {
-    --bg-dark: #0a0814;
     --mario-red: #e52521;
-    --mario-blue: #00247d;
     --mario-yellow: #fbd000;
-    --mario-brown: #a84000;
+    --mario-blue: #00247d;
+    --mario-brown: #803000;
     --sonic-blue: #0000f5;
     --sonic-gold: #ffbe00;
-    --card-bg: #161226;
-    --text-white: #f8f8f8;
-    --border-width: 4px;
+    --sonic-green: #00a800;
 }
 
 body {
-    background-color: var(--bg-dark);
-    background-image: 
-        linear-gradient(rgba(18, 16, 38, 0.9), rgba(10, 8, 20, 0.95)),
-        radial-gradient(#2a2050 1px, transparent 0);
-    background-size: 100% 100%, 16px 16px;
-    color: var(--text-white);
-    font-family: 'Press Start 2P', monospace;
     min-height: 100vh;
+    font-family: 'Press Start 2P', monospace;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 15px;
-    overflow-x: hidden;
+    padding: 20px 10px;
     position: relative;
+    overflow-x: hidden;
+    background-color: #000;
 }
 
-/* Efeito Scanlines CRT (Linhas de Monitor Antigo) */
-body::after {
-    content: " ";
-    display: block;
+/* ==========================================================================
+   FUNDO RECREADO DA IMAGEM (Céu Grid + Grama Verde + Terra Xadrez Laranja)
+   ========================================================================== */
+.stage-background {
     position: fixed;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
-    z-index: 100;
-    pointer-events: none;
-    opacity: 0.6;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Cabeçalho */
+/* Céu Azul com Textura Quadriculada/Listrada */
+.sky-zone {
+    flex: 62;
+    background-color: #2068f8;
+    background-image: 
+        linear-gradient(0deg, rgba(255, 255, 255, 0.18) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.15) 50%, transparent 50%);
+    background-size: 32px 16px, 32px 32px;
+    box-shadow: inset 0 0 60px rgba(0,0,0,0.35);
+}
+
+/* Faixa de Grama Listrada Verde */
+.grass-zone {
+    flex: 7;
+    background: repeating-linear-gradient(
+        90deg,
+        #00e000,
+        #00e000 12px,
+        #009000 12px,
+        #009000 24px
+    );
+    border-top: 4px solid #000;
+    border-bottom: 4px solid #000;
+}
+
+/* Solo Quadriculado Laranja e Castanho */
+.dirt-zone {
+    flex: 31;
+    background-color: #e87000;
+    background-image: 
+        linear-gradient(45deg, #b84800 25%, transparent 25%, transparent 75%, #b84800 75%, #b84800), 
+        linear-gradient(45deg, #b84800 25%, transparent 25%, transparent 75%, #b84800 75%, #b84800);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    box-shadow: inset 0 10px 0 #f8a030;
+}
+
+/* Moldura e Cantos Escuros das Bordas da Imagem */
+.screen-frame {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 12px solid #000;
+    box-shadow: inset 0 0 0 4px #ffffff;
+    pointer-events: none;
+    z-index: 99;
+}
+
+.screen-frame::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 60px; height: 60px;
+    background: #000;
+    clip-path: polygon(0 0, 100% 0, 70% 30%, 30% 70%, 0 100%);
+}
+
+.screen-frame::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: #000;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 70%, 30% 30%);
+}
+
+/* Efeito Scanlines CRT */
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 98;
+}
+
+/* ==========================================================================
+   CABEÇALHO
+   ========================================================================== */
 header {
     text-align: center;
-    margin-bottom: 35px;
-    max-width: 900px;
+    margin: 10px 0 20px 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 15px 25px;
+    border: 4px solid #fff;
+    box-shadow: 6px 6px 0px #000;
 }
 
 h1 {
-    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
-    line-height: 1.4;
-    color: #fff;
-    text-shadow: 
-        4px 4px 0px var(--mario-red),
-        -4px -4px 0px var(--sonic-blue);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    color: var(--mario-yellow);
+    text-shadow: 3px 3px 0px var(--mario-red), -3px -3px 0px var(--sonic-blue);
+    margin-bottom: 8px;
 }
 
 .subtitle {
-    font-size: 0.65rem;
-    color: var(--mario-yellow);
-    letter-spacing: 1px;
-    line-height: 1.8;
-    text-shadow: 2px 2px 0px #000;
-}
-
-.coin-prompt {
-    margin-top: 20px;
     font-size: 0.55rem;
-    color: #888;
-    animation: pulse 1.2s infinite;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-/* Layout dos Cartões de Personagem */
-.story-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 35px;
-    max-width: 1050px;
+/* ==========================================================================
+   ÁREA DO MINI-JOGO INTERATIVO
+   ========================================================================== */
+.game-stage-container {
     width: 100%;
-    margin-bottom: 40px;
+    max-width: 850px;
+    background: #000;
+    border: 6px solid #fff;
+    box-shadow: 8px 8px 0px #000;
+    position: relative;
+    margin-bottom: 25px;
     z-index: 10;
 }
 
-@media (min-width: 850px) {
-    .story-container {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.character-card {
-    background-color: var(--card-bg);
-    border: var(--border-width) solid #000;
-    box-shadow: 
-        0 0 0 var(--border-width) #382d5c,
-        8px 8px 0px #000;
-    padding: 25px;
-    position: relative;
+.stage-header-hud {
+    background: #111;
+    padding: 10px 15px;
     display: flex;
-    flex-direction: column;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-}
-
-.character-card.mario-theme {
-    border-color: var(--mario-red);
-}
-
-.character-card.sonic-theme {
-    border-color: var(--sonic-blue);
-}
-
-/* Cabeçalho do Cartão */
-.card-header {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 4px dashed #2d244c;
-}
-
-.card-title {
-    font-size: 1.1rem;
-}
-
-.mario-theme .card-title {
-    color: var(--mario-red);
-    text-shadow: 2px 2px 0px #000;
-}
-
-.sonic-theme .card-title {
-    color: var(--sonic-blue);
-    text-shadow: 2px 2px 0px #000;
-}
-
-.card-badge {
-    font-size: 0.45rem;
-    padding: 6px 8px;
-    background: #000;
-    border: 2px solid #fff;
-}
-
-/* Elementos Visuais em Pixel Art (CSS Puro) */
-.pixel-art-wrapper {
-    height: 65px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    background-color: #000;
-    border: 2px solid #382d5c;
-    position: relative;
-    overflow: hidden;
-}
-
-.question-block {
-    width: 32px;
-    height: 32px;
-    background-color: var(--mario-yellow);
-    border: 3px solid var(--mario-brown);
-    box-shadow: 
-        inset -3px -3px 0px 0px #804000,
-        inset 3px 3px 0px 0px #ffe066;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    color: var(--mario-brown);
-    font-weight: bold;
-    animation: floatBlock 2s infinite ease-in-out;
-}
-
-@keyframes floatBlock {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-.sonic-ring {
-    width: 24px;
-    height: 30px;
-    border: 4px solid var(--sonic-gold);
-    border-radius: 40%;
-    box-shadow: 0 0 10px var(--sonic-gold);
-    animation: spinRing 0.8s infinite linear;
-}
-
-@keyframes spinRing {
-    0% { transform: scaleX(1); }
-    50% { transform: scaleX(0.2); }
-    100% { transform: scaleX(1); }
-}
-
-/* Texto Narrativo Fluido */
-.story-text {
-    font-size: 0.62rem;
-    line-height: 2.2;
-    color: #d0cce0;
-    text-align: justify;
-}
-
-.story-text p {
-    margin-bottom: 16px;
-}
-
-.story-text p:last-child {
-    margin-bottom: 0;
-}
-
-.highlight-mario {
-    color: var(--mario-yellow);
-}
-
-.highlight-sonic {
+    border-bottom: 4px solid #333;
+    font-size: 0.55rem;
     color: var(--sonic-gold);
 }
 
-/* Painel de Controle / Interatividade */
-.control-panel {
-    background-color: #000;
-    border: 4px solid #fff;
-    padding: 20px;
-    max-width: 650px;
+.game-canvas-area {
+    position: relative;
     width: 100%;
-    text-align: center;
-    box-shadow: 6px 6px 0px #382d5c;
-    margin-bottom: 30px;
-    z-index: 10;
+    height: 260px;
+    background: linear-gradient(to bottom, #1852d8 0%, #3878f8 70%, #00a000 70%, #00e000 75%, #d86000 75%);
+    overflow: hidden;
 }
 
-.panel-desc {
-    font-size: 0.55rem;
-    color: #aaa;
-    margin-bottom: 15px;
-    line-height: 1.6;
+/* Personagens em Pixel-Art */
+#player-mario, #player-sonic {
+    position: absolute;
+    bottom: 25%;
+    width: 36px;
+    height: 44px;
+    transition: left 0.05s linear;
 }
 
-.btn-group {
+#player-mario {
+    left: 80px;
+    background-color: var(--mario-red);
+    border: 3px solid #000;
+    box-shadow: inset 0 8px 0 var(--mario-yellow), inset 0 -12px 0 var(--mario-blue);
+}
+
+#player-mario::before {
+    content: "M";
+    position: absolute;
+    top: 2px; left: 10px;
+    font-size: 10px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#player-sonic {
+    left: 180px;
+    background-color: var(--sonic-blue);
+    border: 3px solid #000;
+    border-radius: 8px 18px 4px 4px;
+    box-shadow: inset 4px 0 0 var(--sonic-gold), inset 0 -10px 0 #fff;
+}
+
+#player-sonic::before {
+    content: "S";
+    position: absolute;
+    top: 4px; right: 6px;
+    font-size: 10px;
+    color: #fff;
+}
+
+/* Blocos e Coletáveis */
+.game-block {
+    position: absolute;
+    bottom: 45%;
+    width: 32px;
+    height: 32px;
+    background: var(--mario-yellow);
+    border: 3px solid var(--mario-brown);
+    box-shadow: inset -3px -3px 0 #803000, inset 3px 3px 0 #ffe066;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mario-brown);
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.game-ring {
+    position: absolute;
+    bottom: 50%;
+    width: 20px;
+    height: 26px;
+    border: 4px solid var(--sonic-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--sonic-gold);
+}
+
+/* Controles Arcade */
+.game-controls {
+    background: #181228;
+    padding: 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
+    align-items: center;
+    border-top: 4px solid #fff;
 }
 
-.arcade-btn {
-    background-color: #222;
+.control-btn {
+    background: #222;
     color: #fff;
     border: 3px solid #fff;
-    padding: 10px 14px;
-    font-size: 0.5rem;
+    padding: 10px 15px;
     font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
     cursor: pointer;
-    box-shadow: 3px 3px 0px #555;
-    transition: all 0.1s;
+    box-shadow: 3px 3px 0 #000;
 }
 
-.arcade-btn:hover {
-    background-color: #333;
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0px #777;
-}
-
-.arcade-btn:active {
+.control-btn:active {
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px #333;
+    box-shadow: 1px 1px 0 #000;
 }
 
-.arcade-btn.btn-mario {
+.control-btn.mario-btn {
     border-color: var(--mario-red);
     color: var(--mario-yellow);
 }
 
-.arcade-btn.btn-sonic {
+.control-btn.sonic-btn {
     border-color: var(--sonic-blue);
     color: #88aaff;
 }
 
-/* Rodapé */
-footer {
-    font-size: 0.5rem;
-    color: #665c84;
-    text-align: center;
-    margin-top: auto;
-    line-height: 1.8;
+/* ==========================================================================
+   TEXTO COMPARATIVO E NARRATIVO
+   ========================================================================== */
+.comparison-wrapper {
+    max-width: 850px;
+    width: 100%;
+    background: rgba(10, 8, 20, 0.92);
+    border: 5px solid #000;
+    box-shadow: 0 0 0 4px #fff, 8px 8px 0 #000;
+    padding: 25px;
     z-index: 10;
+    margin-bottom: 30px;
+}
+
+.narrative-title {
+    color: var(--mario-yellow);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.6;
+    border-bottom: 4px dashed #333;
+    padding-bottom: 12px;
+}
+
+.narrative-text {
+    font-size: 0.62rem;
+    line-height: 2.2;
+    color: #e0e0e0;
+    text-align: justify;
+}
+
+.narrative-text p {
+    margin-bottom: 18px;
+}
+
+.highlight-mario {
+    color: var(--mario-yellow);
+    text-shadow: 1px 1px 0 #000;
+}
+
+.highlight-sonic {
+    color: var(--sonic-gold);
+    text-shadow: 1px 1px 0 #000;
+}
+
+footer {
+    z-index: 10;
+    background: #000;
+    padding: 10px 20px;
+    border: 2px solid #fff;
+    font-size: 0.45rem;
+    color: #aaa;
+    text-align: center;
 }
