@@ -1,0 +1,307 @@
+/* ==========================================================================
+   MARIO VS SONIC - ESTILOS RETRÔ (style.css)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Reset e Configurações Globais */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    image-rendering: pixelated;
+}
+
+:root {
+    --bg-dark: #0a0814;
+    --mario-red: #e52521;
+    --mario-blue: #00247d;
+    --mario-yellow: #fbd000;
+    --mario-brown: #a84000;
+    --sonic-blue: #0000f5;
+    --sonic-gold: #ffbe00;
+    --card-bg: #161226;
+    --text-white: #f8f8f8;
+    --border-width: 4px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        linear-gradient(rgba(18, 16, 38, 0.9), rgba(10, 8, 20, 0.95)),
+        radial-gradient(#2a2050 1px, transparent 0);
+    background-size: 100% 100%, 16px 16px;
+    color: var(--text-white);
+    font-family: 'Press Start 2P', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 15px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Efeito Scanlines CRT (Linhas de Monitor Antigo) */
+body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    margin-bottom: 35px;
+    max-width: 900px;
+}
+
+h1 {
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+    line-height: 1.4;
+    color: #fff;
+    text-shadow: 
+        4px 4px 0px var(--mario-red),
+        -4px -4px 0px var(--sonic-blue);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 0.65rem;
+    color: var(--mario-yellow);
+    letter-spacing: 1px;
+    line-height: 1.8;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.coin-prompt {
+    margin-top: 20px;
+    font-size: 0.55rem;
+    color: #888;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Layout dos Cartões de Personagem */
+.story-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 35px;
+    max-width: 1050px;
+    width: 100%;
+    margin-bottom: 40px;
+    z-index: 10;
+}
+
+@media (min-width: 850px) {
+    .story-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.character-card {
+    background-color: var(--card-bg);
+    border: var(--border-width) solid #000;
+    box-shadow: 
+        0 0 0 var(--border-width) #382d5c,
+        8px 8px 0px #000;
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.character-card.mario-theme {
+    border-color: var(--mario-red);
+}
+
+.character-card.sonic-theme {
+    border-color: var(--sonic-blue);
+}
+
+/* Cabeçalho do Cartão */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 4px dashed #2d244c;
+}
+
+.card-title {
+    font-size: 1.1rem;
+}
+
+.mario-theme .card-title {
+    color: var(--mario-red);
+    text-shadow: 2px 2px 0px #000;
+}
+
+.sonic-theme .card-title {
+    color: var(--sonic-blue);
+    text-shadow: 2px 2px 0px #000;
+}
+
+.card-badge {
+    font-size: 0.45rem;
+    padding: 6px 8px;
+    background: #000;
+    border: 2px solid #fff;
+}
+
+/* Elementos Visuais em Pixel Art (CSS Puro) */
+.pixel-art-wrapper {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #000;
+    border: 2px solid #382d5c;
+    position: relative;
+    overflow: hidden;
+}
+
+.question-block {
+    width: 32px;
+    height: 32px;
+    background-color: var(--mario-yellow);
+    border: 3px solid var(--mario-brown);
+    box-shadow: 
+        inset -3px -3px 0px 0px #804000,
+        inset 3px 3px 0px 0px #ffe066;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--mario-brown);
+    font-weight: bold;
+    animation: floatBlock 2s infinite ease-in-out;
+}
+
+@keyframes floatBlock {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.sonic-ring {
+    width: 24px;
+    height: 30px;
+    border: 4px solid var(--sonic-gold);
+    border-radius: 40%;
+    box-shadow: 0 0 10px var(--sonic-gold);
+    animation: spinRing 0.8s infinite linear;
+}
+
+@keyframes spinRing {
+    0% { transform: scaleX(1); }
+    50% { transform: scaleX(0.2); }
+    100% { transform: scaleX(1); }
+}
+
+/* Texto Narrativo Fluido */
+.story-text {
+    font-size: 0.62rem;
+    line-height: 2.2;
+    color: #d0cce0;
+    text-align: justify;
+}
+
+.story-text p {
+    margin-bottom: 16px;
+}
+
+.story-text p:last-child {
+    margin-bottom: 0;
+}
+
+.highlight-mario {
+    color: var(--mario-yellow);
+}
+
+.highlight-sonic {
+    color: var(--sonic-gold);
+}
+
+/* Painel de Controle / Interatividade */
+.control-panel {
+    background-color: #000;
+    border: 4px solid #fff;
+    padding: 20px;
+    max-width: 650px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 6px 6px 0px #382d5c;
+    margin-bottom: 30px;
+    z-index: 10;
+}
+
+.panel-desc {
+    font-size: 0.55rem;
+    color: #aaa;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.arcade-btn {
+    background-color: #222;
+    color: #fff;
+    border: 3px solid #fff;
+    padding: 10px 14px;
+    font-size: 0.5rem;
+    font-family: 'Press Start 2P', monospace;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #555;
+    transition: all 0.1s;
+}
+
+.arcade-btn:hover {
+    background-color: #333;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #777;
+}
+
+.arcade-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #333;
+}
+
+.arcade-btn.btn-mario {
+    border-color: var(--mario-red);
+    color: var(--mario-yellow);
+}
+
+.arcade-btn.btn-sonic {
+    border-color: var(--sonic-blue);
+    color: #88aaff;
+}
+
+/* Rodapé */
+footer {
+    font-size: 0.5rem;
+    color: #665c84;
+    text-align: center;
+    margin-top: auto;
+    line-height: 1.8;
+    z-index: 10;
+}
