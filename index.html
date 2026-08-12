@@ -3,421 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Mario vs Sonic - A Filosofia dos Pulos e Rampas</title>
-    <!-- Fonte Pixel Art Estilo Arcade -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    
-    <style>
-        /* RESET & VARIÁVEIS DE CORES RETRÔ */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            image-rendering: pixelated;
-        }
-
-        :root {
-            --bg-dark: #0a0814;
-            --mario-red: #e52521;
-            --mario-blue: #00247d;
-            --mario-yellow: #fbd000;
-            --mario-brown: #a84000;
-            --sonic-blue: #0000f5;
-            --sonic-red: #d80000;
-            --sonic-gold: #ffbe00;
-            --sonic-green: #00a800;
-            --card-bg: #161226;
-            --text-white: #f8f8f8;
-            --border-width: 4px;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                linear-gradient(rgba(18, 16, 38, 0.9), rgba(10, 8, 20, 0.95)),
-                radial-gradient(#2a2050 1px, transparent 0);
-            background-size: 100% 100%, 16px 16px;
-            color: var(--text-white);
-            font-family: 'Press Start 2P', monospace;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 15px;
-            overflow-x: hidden;
-        }
-
-        /* CABEÇALHO */
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            max-width: 900px;
-        }
-
-        .title-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: clamp(1.2rem, 3.5vw, 2.2rem);
-            line-height: 1.4;
-            color: #fff;
-            text-shadow: 
-                4px 4px 0px var(--mario-red),
-                -4px -4px 0px var(--sonic-blue);
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            font-size: 0.65rem;
-            color: var(--mario-yellow);
-            letter-spacing: 1px;
-            line-height: 1.8;
-            margin-top: 10px;
-            text-shadow: 2px 2px 0px #000;
-        }
-
-        .coin-prompt {
-            margin-top: 20px;
-            font-size: 0.55rem;
-            color: #888;
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* CONTAINER PRINCIPAL DA NARRATIVA */
-        .story-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-            max-width: 1000px;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
-        @media (min-width: 850px) {
-            .story-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        /* CARTÕES DE PERSONAGEM */
-        .character-card {
-            background-color: var(--card-bg);
-            border: var(--border-width) solid #000;
-            box-shadow: 
-                0 0 0 var(--border-width) #382d5c,
-                8px 8px 0px #000;
-            padding: 25px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease, opacity 0.3s ease;
-        }
-
-        .character-card.mario-theme {
-            border-color: var(--mario-red);
-        }
-
-        .character-card.sonic-theme {
-            border-color: var(--sonic-blue);
-        }
-
-        /* CABEÇALHO DO CARTÃO */
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 4px dashed #2d244c;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-        }
-
-        .mario-theme .card-title {
-            color: var(--mario-red);
-            text-shadow: 2px 2px 0px #000;
-        }
-
-        .sonic-theme .card-title {
-            color: var(--sonic-blue);
-            text-shadow: 2px 2px 0px #000;
-        }
-
-        .card-badge {
-            font-size: 0.45rem;
-            padding: 6px 8px;
-            background: #000;
-            border: 2px solid #fff;
-        }
-
-        /* ELEMENTOS EM PIXEL ART (CSS PURA) */
-        .pixel-art-wrapper {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            background-color: #000;
-            border: 2px solid #382d5c;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Bloco Interrogativo do Mario em Pixel Art */
-        .question-block {
-            width: 32px;
-            height: 32px;
-            background-color: var(--mario-yellow);
-            border: 3px solid var(--mario-brown);
-            box-shadow: 
-                inset -3px -3px 0px 0px #804000,
-                inset 3px 3px 0px 0px #ffe066;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: var(--mario-brown);
-            font-weight: bold;
-            animation: floatBlock 2s infinite ease-in-out;
-        }
-
-        @keyframes floatBlock {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        /* Anel do Sonic em Pixel Art */
-        .sonic-ring {
-            width: 24px;
-            height: 30px;
-            border: 4px solid var(--sonic-gold);
-            border-radius: 40%;
-            box-shadow: 0 0 10px var(--sonic-gold);
-            animation: spinRing 0.8s infinite linear;
-        }
-
-        @keyframes spinRing {
-            0% { transform: scaleX(1); }
-            50% { transform: scaleX(0.2); }
-            100% { transform: scaleX(1); }
-        }
-
-        /* TEXTO NARRATIVO FLUIDO */
-        .story-text {
-            font-size: 0.62rem;
-            line-height: 2.2;
-            color: #d0cce0;
-            text-align: justify;
-            hyphens: auto;
-        }
-
-        .story-text p {
-            margin-bottom: 16px;
-        }
-
-        .story-text p:last-child {
-            margin-bottom: 0;
-        }
-
-        .highlight-mario {
-            color: var(--mario-yellow);
-        }
-
-        .highlight-sonic {
-            color: var(--sonic-gold);
-        }
-
-        /* PAINEL DE CONTROLE / FILTRO RETRÔ */
-        .control-panel {
-            background-color: #000;
-            border: 4px solid #fff;
-            padding: 20px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 6px 6px 0px #382d5c;
-            margin-bottom: 30px;
-        }
-
-        .panel-desc {
-            font-size: 0.55rem;
-            color: #aaa;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .arcade-btn {
-            background-color: #222;
-            color: #fff;
-            border: 3px solid #fff;
-            padding: 10px 14px;
-            font-size: 0.5rem;
-            font-family: 'Press Start 2P', monospace;
-            cursor: pointer;
-            box-shadow: 3px 3px 0px #555;
-            transition: all 0.1s;
-        }
-
-        .arcade-btn:hover {
-            background-color: #333;
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0px #777;
-        }
-
-        .arcade-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px #333;
-        }
-
-        .arcade-btn.btn-mario {
-            border-color: var(--mario-red);
-            color: var(--mario-yellow);
-        }
-
-        .arcade-btn.btn-sonic {
-            border-color: var(--sonic-blue);
-            color: #88aaff;
-        }
-
-        /* RODAPÉ RETRÔ */
-        footer {
-            font-size: 0.5rem;
-            color: #665c84;
-            text-align: center;
-            margin-top: auto;
-            line-height: 1.8;
-        }
-    </style>
+    <title>Mario vs Sonic - Retro Stage & Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Fundo Estilo 16-Bit Stage (Céu Grid + Grama + Solo Laranja) -->
+    <div class="stage-background">
+        <div class="sky-zone"></div>
+        <div class="grass-zone"></div>
+        <div class="dirt-zone"></div>
+    </div>
+
+    <!-- Moldura com cantos estilizados e linhas CRT de monitor antigo -->
+    <div class="screen-frame"></div>
+    <div class="scanlines"></div>
+
+    <!-- Cabeçalho Principal -->
     <header>
-        <div class="title-container">
-            <h1>MARIO VS SONIC</h1>
-        </div>
-        <div class="subtitle">16-BIT DESIGN PHILOSOPHY</div>
-        <div class="coin-prompt">INSERT COIN TO COMPARE</div>
+        <h1>MARIO VS SONIC</h1>
+        <div class="subtitle">EXPERIMENTE A FÍSICA E O DESIGN DOS DOIS ÍCONES DOS ANOS 90</div>
     </header>
 
-    <main class="story-container">
+    <!-- ÁREA DO MINI-JOGO INTERATIVO -->
+    <section class="game-stage-container">
+        <div class="stage-header-hud">
+            <span>STAGE 1: 16-BIT COMPARISON</span>
+            <span id="game-status">TESTE A FÍSICA NOS BOTÕES ABAIXO!</span>
+        </div>
 
-        <!-- LADO DO MARIO -->
-        <article class="character-card mario-theme" id="mario-card">
-            <div class="card-header">
-                <h2 class="card-title">MARIO</h2>
-                <span class="card-badge" style="color: var(--mario-yellow);">NINTENDO</span>
-            </div>
+        <div class="game-canvas-area" id="canvas-area">
+            <!-- Blocos Interativos e Coletáveis -->
+            <div class="game-block" style="left: 100px;">?</div>
+            <div class="game-block" style="left: 220px;">?</div>
+            <div class="game-ring" style="left: 420px;"></div>
+            <div class="game-ring" style="left: 470px;"></div>
+            <div class="game-ring" style="left: 520px;"></div>
 
-            <div class="pixel-art-wrapper">
-                <div class="question-block">?</div>
-            </div>
+            <!-- Sprites dos Personagens -->
+            <div id="player-mario" title="Super Mario"></div>
+            <div id="player-sonic" title="Sonic The Hedgehog"></div>
+        </div>
 
-            <div class="story-text">
-                <p>
-                    O amor duradouro que atravessa gerações pelo universo de <span class="highlight-mario">Super Mario</span> não nasce por mero acaso ou apelo nostálgico. Ele é o resultado direto de uma das mais elegantes obras-primas de engenharia de game design da história: a criação de um ecossistema fundado no conforto, na previsibilidade e na precisão milimétrica.
-                </p>
-                <p>
-                    Diferente de mundos caóticos e incertos, o Reino dos Cogumelos opera sob uma física impecável onde cada salto é estritamente calculado e totalmente confiável. O tempo em que o jogador segura o botão de pulo se traduz instantaneamente na altura exata do salto, e a gravidade responde com uma consistência matemática confortável. Não existem surpresas injustas; existe controle absoluto.
-                </p>
-                <p>
-                    Essa resposta física perfeita gera uma sensação profundamente relaxante e satisfatória de domínio. Jogar Mario é entrar em um estado de fluxo ritmado, no qual a mente antecipa a trajetória, calcula os blocos e pousa com precisão cirúrgica. É a arte do movimento transformada em uma experiência reconfortante, justa e eternamente recompensadora.
-                </p>
-            </div>
-        </article>
-
-        <!-- LADO DO SONIC -->
-        <article class="character-card sonic-theme" id="sonic-card">
-            <div class="card-header">
-                <h2 class="card-title">SONIC</h2>
-                <span class="card-badge" style="color: var(--sonic-gold);">SEGA</span>
-            </div>
-
-            <div class="pixel-art-wrapper">
-                <div class="sonic-ring"></div>
-            </div>
-
-            <div class="story-text">
-                <p>
-                    No polo oposto da filosofia de design dos anos 90, <span class="highlight-sonic">Sonic The Hedgehog</span> foi concebido como um espetáculo de atitude, impulso e velocidade vertiginosa. A proposta da SEGA não era a cadência pensada, mas sim a quebra de barreiras e o fluxo ininterrupto de movimento através de cenários vibrantes.
-                </p>
-                <p>
-                    Substituindo a precisão metódica por uma física baseada na inércia e no momentum, o jogo desafia o jogador a dominar rampas, loops e molares em frações de segundo. O controle dá lugar à velocidade, transformando a navegação pelos caminhos múltiplos em um teste contínuo de reflexo instantâneo e adrenalina pura.
-                </p>
-                <p>
-                    Onde o encanador oferece o conforto da estabilidade calculada, o ouriço azul entrega a empolgação do risco e da reação imediata. São duas visões revolucionárias do gênero de plataforma que moldaram para sempre a cultura dos videogames.
-                </p>
-            </div>
-        </article>
-
-    </main>
-
-    <!-- PAINEL INTERATIVO DE COMPARAÇÃO -->
-    <section class="control-panel">
-        <p class="panel-desc" id="panel-status">
-            SELECIONE UMA VISÃO PARA DESTACAR A FILOSOFIA DE GAME DESIGN
-        </p>
-        <div class="btn-group">
-            <button class="arcade-btn btn-mario" onclick="focusCard('mario')">FOCO: PRECISÃO (MARIO)</button>
-            <button class="arcade-btn btn-sonic" onclick="focusCard('sonic')">FOCO: VELOCIDADE (SONIC)</button>
-            <button class="arcade-btn" onclick="focusCard('both')">MOSTRAR AMBOS</button>
+        <!-- Painel de Controles do Jogo -->
+        <div class="game-controls">
+            <button class="control-btn mario-btn" id="btn-jump-mario">PULAR COM MARIO (PRECISÃO)</button>
+            <button class="control-btn sonic-btn" id="btn-dash-sonic">CORRER COM SONIC (VELOCIDADE)</button>
+            <button class="control-btn" id="btn-reset">RESETAR</button>
         </div>
     </section>
 
+    <!-- NARRATIVA IMERSIVA E COMPARATIVA -->
+    <main class="comparison-wrapper">
+        <h2 class="narrative-title">A ARTE DO CONTROLE ABSOLUTO VS O ESPETÁCULO DA VELOCIDADE</h2>
+        
+        <div class="narrative-text">
+            <p>
+                O amor duradouro que atravessa décadas pelo universo de <span class="highlight-mario">Super Mario</span> não nasce por mero acaso ou simples nostalgia. Ele é o resultado direto de uma das mais elegantes obras-primas de engenharia de game design da história dos videogames: a criação de um ecossistema fundado no conforto, na previsibilidade e em uma física de extrema precisão.
+            </p>
+            <p>
+                Diferente de mundos imprevisíveis ou caóticos, o Reino dos Cogumelos opera sob regras maravilhosamente claras e confiáveis. Cada pulo do encanador responde com exatidão matemática ao tempo em que o botão é pressionado, permitindo um controle absoluto sobre a trajetória no ar e garantindo uma aterrissagem milimétrica. Não existem surpresas injustas; cada movimento é calculado e seguro, gerando uma sensação profundamente relaxante, satisfatória e gratificante de domínio total sobre o personagem.
+            </p>
+            <p>
+                Em contrapartida, <span class="highlight-sonic">Sonic The Hedgehog</span> foi concebido para desafiar esses limites, abraçando a inércia, o momentum e a aceleração desenfreada. Suas fases convidam ao risco constante, exigindo reflexos mecânicos instantâneos em loops, rampas e molas. Enquanto Mario premia a estabilidade, a leitura de tela e o ritmo cadenciado, Sonic entrega o puro espetáculo visual e a adrenalina da velocidade. Dois caminhos opostos que definiram a era de ouro dos jogos de plataforma nos anos 90.
+            </p>
+        </div>
+    </main>
+
+    <!-- Rodapé Estilo Arcade -->
     <footer>
-        <p>SUPER MARIO & SONIC ARE TRADEMARKS OF NINTENDO & SEGA</p>
-        <p style="margin-top: 5px;">ESTÉTICA RETRÔ 8-BIT / 16-BIT • WEB DESIGN</p>
+        <p>MARIO & SONIC ARE TRADEMARKS OF NINTENDO & SEGA • STAGE DESIGN 16-BIT RETRO</p>
     </footer>
 
+    <!-- Script para movimentação interativa no mini-jogo -->
     <script>
-        // Lógica de alternância dos cartões de comparação
-        const marioCard = document.getElementById('mario-card');
-        const sonicCard = document.getElementById('sonic-card');
-        const statusText = document.getElementById('panel-status');
+        document.addEventListener('DOMContentLoaded', () => {
+            const mario = document.getElementById('player-mario');
+            const sonic = document.getElementById('player-sonic');
+            const statusText = document.getElementById('game-status');
 
-        function focusCard(type) {
-            if (type === 'mario') {
-                marioCard.style.opacity = '1';
-                marioCard.style.transform = 'scale(1.02)';
-                sonicCard.style.opacity = '0.35';
-                sonicCard.style.transform = 'scale(0.98)';
-                statusText.innerText = 'EXIBINDO: DESIGN BASEADO EM FISICA PRECISA E DOMÍNIO CONFORTÁVEL.';
-                statusText.style.color = 'var(--mario-yellow)';
-            } else if (type === 'sonic') {
-                sonicCard.style.opacity = '1';
-                sonicCard.style.transform = 'scale(1.02)';
-                marioCard.style.opacity = '0.35';
-                marioCard.style.transform = 'scale(0.98)';
-                statusText.innerText = 'EXIBINDO: DESIGN BASEADO EM INÉRCIA, MOMENTUM E REFLEXOS RÁPIDOS.';
-                statusText.style.color = 'var(--sonic-gold)';
-            } else {
-                marioCard.style.opacity = '1';
-                marioCard.style.transform = 'scale(1)';
-                sonicCard.style.opacity = '1';
-                sonicCard.style.transform = 'scale(1)';
-                statusText.innerText = 'SELECIONE UMA VISÃO PARA DESTACAR A FILOSOFIA DE GAME DESIGN';
-                statusText.style.color = '#aaa';
-            }
-        }
+            const btnMario = document.getElementById('btn-jump-mario');
+            const btnSonic = document.getElementById('btn-dash-sonic');
+            const btnReset = document.getElementById('btn-reset');
+
+            let isMarioJumping = false;
+
+            // Pulo com física calculada e controlada do Mario
+            btnMario.addEventListener('click', () => {
+                if (isMarioJumping) return;
+                isMarioJumping = true;
+                statusText.innerText = "MARIO: PULO DE FÍSICA PRECISA E CONTROLADA!";
+                
+                let jumpHeight = 0;
+                const upInterval = setInterval(() => {
+                    if (jumpHeight >= 90) {
+                        clearInterval(upInterval);
+                        const downInterval = setInterval(() => {
+                            if (jumpHeight <= 0) {
+                                clearInterval(downInterval);
+                                isMarioJumping = false;
+                            } else {
+                                jumpHeight -= 6;
+                                mario.style.bottom = `calc(25% + ${jumpHeight}px)`;
+                            }
+                        }, 16);
+                    } else {
+                        jumpHeight += 6;
+                        mario.style.bottom = `calc(25% + ${jumpHeight}px)`;
+                    }
+                }, 16);
+            });
+
+            // Arrancada com inércia e velocidade do Sonic
+            btnSonic.addEventListener('click', () => {
+                statusText.innerText = "SONIC: VELOCIDADE E INÉRCIA 16-BITS!";
+                let currentLeft = parseInt(window.getComputedStyle(sonic).left);
+                let speed = 0;
+                
+                const dashInterval = setInterval(() => {
+                    speed += 2;
+                    currentLeft += speed;
+                    sonic.style.left = `${currentLeft}px`;
+                    
+                    if (currentLeft > 700) {
+                        clearInterval(dashInterval);
+                        sonic.style.left = '180px';
+                    }
+                }, 20);
+            });
+
+            // Reseta a posição dos personagens
+            btnReset.addEventListener('click', () => {
+                mario.style.bottom = '25%';
+                mario.style.left = '80px';
+                sonic.style.left = '180px';
+                statusText.innerText = "POSIÇÕES RESETADAS! TESTE NOVAMENTE.";
+            });
+        });
     </script>
 </body>
 </html>
